@@ -46,7 +46,12 @@ for (const line of inputList) {
 
   console.log("line:", line, " Numbers:", [firstNumber, lastNumber])
 
+  // if (lastNumber === undefined) {
+  //   lastNumber = firstNumber;
+  // }
+
   let twoDigitNumber = parseInt(firstNumber + lastNumber);
+  console.log(twoDigitNumber);
 
   twoDigitList.push([twoDigitNumber])
 
