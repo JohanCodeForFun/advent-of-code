@@ -5,18 +5,19 @@ const right = [];
 let distance = 0;
 
 (async () => {
-  const file = await open('sample_input.txt');
+  const file = await open('exercise_input.txt');
 
   for await (const line of file.readLines()) {
-    left.push(parseInt(line[0]))
-    right.push(parseInt(line[4]))
+    const [leftLine, rightLine] = line.split('   ')
+
+    left.push(parseInt(leftLine))
+    right.push(parseInt(rightLine))
   }
 
   left.sort((a, b) => a - b)
   right.sort((a, b) => a - b)
 
   for (let i = 0; i < left.length; i++) {
-    console.log(left[i], right[i])
     if (left[i] > right[i]) {
       distance += left[i] - right[i];
     } else if (left[i] < right[i]) {
@@ -24,7 +25,10 @@ let distance = 0;
     } else {
       continue;
     }
-
-    console.log(distance)
+    
   }
+
+  console.log(distance)
+
+  return distance;
 })();
