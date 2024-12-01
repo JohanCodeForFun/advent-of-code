@@ -1,4 +1,4 @@
-const { open } = require('node:fs/promises');
+const { open } = require("node:fs/promises");
 
 const leftArray = [];
 const rightArray = [];
@@ -7,13 +7,18 @@ const rightCounter = {};
 let similarityScore = 0;
 
 (async () => {
-  const file = await open('sample_input.txt');
+  const file = await open("exercise_input.txt");
+  const pattern = /^(\d{5})\s+(\d{5})$/;
 
   for await (const line of file.readLines()) {
     const [left, right] = line.trim().split(/\s+/).map(Number);
 
-    leftArray.push(left)
-    rightArray.push(right)
+    const match = line.match(pattern);
+
+    if (match) {
+      leftArray.push(match[1]);
+      rightArray.push(match[2]);
+    }
 
     if (leftCounter[left]) {
       leftCounter[left]++;
@@ -27,24 +32,12 @@ let similarityScore = 0;
       rightCounter[right] = 1;
     }
   }
-  
-  console.log(leftCounter, rightCounter)
 
-  console.log(leftArray, rightArray)
-
-  leftArray.forEach((num => {
-    // console.log(num, leftCounter[num], rightCounter[num])
+  leftArray.forEach((num) => {
     if (Number(leftCounter[num]) && Number(rightCounter[num])) {
-      console.log(num, rightCounter[num])
-      similarityScore += num * rightCounter[num]
+      similarityScore += num * rightCounter[num];
     }
-    // if (num === rightArray[num]) {
-    //   similarityScore += num * rightCounter[num];
-    //   console.log("pow:", num, rightArray[num], rightCounter[num], similarityScore)
-    // } else {
-    //   console.log("noo:", num, rightArray[num])
-    // }
-
-  }))
-  console.log(similarityScore)
+  });
+  
+  console.log(similarityScore);
 })();
