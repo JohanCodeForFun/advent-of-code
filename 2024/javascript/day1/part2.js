@@ -1,7 +1,6 @@
 const { open } = require("node:fs/promises");
 
 const leftArray = [];
-const rightArray = [];
 const leftCounter = {};
 const rightCounter = {};
 let similarityScore = 0;
@@ -17,7 +16,6 @@ let similarityScore = 0;
 
     if (match) {
       leftArray.push(match[1]);
-      rightArray.push(match[2]);
     }
 
     if (leftCounter[left]) {
@@ -38,6 +36,8 @@ let similarityScore = 0;
       similarityScore += num * rightCounter[num];
     }
   });
-  
+
   console.log(similarityScore);
+  
+  return similarityScore
 })();
