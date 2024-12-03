@@ -1,25 +1,37 @@
-const input = "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))";
+const fs = require("fs");
+const readline = require("readline");
+const fileStream = fs.createReadStream("exercise_input.txt");
 
-const regex = /mul\(\d{1,3},\d{1,3}\)/g;
+const rl = readline.createInterface({
+  input: fileStream,
+  crlfDelay: Infinity,
+});
 
-const matches = input.match(regex);
+let input = "";
 
-console.log(matches); // ["mul(2,4)", "mul(11,8)", "mul(8,5)"]
+rl.on("line", (line) => {
+  input += line;
+});
 
-let sum = 0;
+rl.on("close", () => {
+  const regex = /mul\(\d{1,3},\d{1,3}\)/g;
 
-// input a function mul()
-// multiply the result 2,4 = 8
-// add it together for each element (2*4=8 + 11*8=88 + 8*4=40) = 136
+  const matches = input.match(regex);
 
-function createMultiplier(callback) {
-  let product = num1 * num2
-  callback(product)
-}
+  console.log(matches); // ["mul(2,4)", "mul(11,8)", "mul(8,5)"]
 
+  function processMatches(matches) {
+    return matches.map((match) => {
+      const numbers = match.match(/\d+/g).map(Number);
+      return numbers[0] * numbers[1];
+    });
+  }
 
-function logSum(result) {
-  console.log("The product is:", result)
-}
+  const products = processMatches(matches);
 
-createMultiplier(1,2, logSum)
+  console.log(products); // [8, 88, 40]
+
+  const sum = products.reduce((acc, sum) => acc + sum, 0);
+
+  console.log(sum);
+});
